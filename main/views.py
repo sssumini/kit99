@@ -4,7 +4,36 @@ from django.utils import timezone
 from django import forms
 from django.http import JsonResponse
 from django.utils.dateparse import parse_date
+import serial
+from .models import SearchResult
+import requests
+from dateutil.relativedelta import relativedelta
+
 # Create your views here.
+
+
+
+def searchpage(request):
+    if request.method == 'GET':
+        query = request.GET.get('query', '')
+        client_id = 'cD9SFepUFYMQgLysXSdO'
+        client_secret = 'fucA5wdZAC'
+        
+        # 변경된 코드 (백과사전 검색)
+        url = f'https://openapi.naver.com/v1/search/encyc.json?query={query}'
+        # 변경된 코드 (백과사전 검색)
+        headers = {'X-Naver-Client-Id': client_id, 'X-Naver-Client-Secret': client_secret}
+
+        
+        response = requests.get(url, headers=headers)
+        
+        if response.status_code == 200:
+            data = response.json()
+            search_results = data.get('items', [])[:2]
+            return render(request, 'main/search/search.html', {'search_results': search_results, 'query': query})
+        
+    return render(request, 'main/search/search.html')
+
 
 def stockpage(request):
     if request.method == 'POST':
@@ -80,6 +109,7 @@ def deadlinepage(request):
             if purchase_date:
                 medical_kit = MedicalKit.objects.first()
                 medical_kit.purchase_date = purchase_date
+                medical_kit.expiration_date = purchase_date + relativedelta(days=1095)
                 medical_kit.save()
 
                 return redirect('updatepage')
@@ -90,17 +120,25 @@ def updatepage(request):
     if request.method == 'POST':
         purchase_date_str = request.POST.get('purchase_date')
         expiration_date_str = request.POST.get('expiration_date')
+        expiration_date_str1 = request.POST.get('expiration_date')
 
         if purchase_date_str:
             purchase_date = parse_date(purchase_date_str)
             if purchase_date:
                 medical_kit = MedicalKit.objects.first()
                 medical_kit.purchase_date = purchase_date
+                medical_kit.expiration_date = purchase_date + relativedelta(days=1095)
+                medical_kit.expiration_date1 = purchase_date + relativedelta(days=365)
 
         if expiration_date_str:
             expiration_date = parse_date(expiration_date_str)
             if expiration_date:
                 medical_kit.expiration_date = expiration_date
+        
+        if expiration_date_str1:
+            expiration_date1 = parse_date(expiration_date_str1)
+            if expiration_date1:
+                medical_kit.expiration_date1 = expiration_date1
 
         medical_kit.save()
 

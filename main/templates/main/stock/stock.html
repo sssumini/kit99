@@ -1,6 +1,7 @@
+{% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}?after">
+<link rel="stylesheet" type="text/css" href="{% static 'css/project.css' %}?after">
 
 <section id="title">
     <div class="title_name">구급상비약 재고 확인 </div>
@@ -15,10 +16,6 @@
         </tr>
         <tr>
             <td><input type="text" name="name" value="감기약"></td>
-            <td><input type="text" name="quantity"></td>
-        </tr>
-        <tr>
-            <td><input type="text" name="name" value="타이레놀"></td>
             <td><input type="text" name="quantity"></td>
         </tr>
         <tr>

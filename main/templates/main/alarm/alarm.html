@@ -1,18 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alarm</title>
-</head>
+
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/project.css' %}?after">
+
+<section id="title">
+    <div class="title_name">알람 페이지 </div>
+</section>
+
 <body>
+    <h2>알람 페이지</h2>
     {% if temperature > 30.0 or humidity > 80.0 %}
-        <h1>ALARM! Temperature or humidity is too high!</h1>
+        <p>온습도가 일정 값 이상입니다. 주의하세요!</p>
         <p>Temperature: {{ temperature }}, Humidity: {{ humidity }}</p>
         <!-- 여기에 추가적인 알림 내용을 작성할 수 있습니다. -->
     {% else %}
         <h1>No alarm at the moment</h1>
     {% endif %}
 </body>
-</html>
+{% endblock %}

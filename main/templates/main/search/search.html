@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <section id="title">
+        <div class="title_name">증상 및 응급처치 검색</div>
+    </section>
+
+    <form method="get" action="{% url 'searchpage' %}">
+        <label for="query">검색어:</label>
+        <input type="text" id="query" name="query" value="{{ query }}">
+        <button type="submit">검색</button>
+    </form>
+
+    {% if search_results %}
+        <h2></h2>
+        <ul>
+            {% for result in search_results %}
+                <li>
+                    <a href="{{ result.link }}" target="_blank">{{ result.title }}</a>
+                    <p>{{ result.description }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if error_message %}
+        <h2>Error</h2>
+        <p>{{ error_message }}</p>
+    {% endif %}
+{% endblock %}

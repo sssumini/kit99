@@ -1,20 +1,66 @@
+{% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}?after">
-
+<link href="main.css" type="text/css" rel="stylesheet">
 <section id="title">
     <div class="title_name">구급용품 유통기한 조회 </div>
 </section>
 
 <p>구급용품 목록 : {{ medical_kit.name }}</p>
-<p>구매 날짜: {{ medical_kit.purchase_date }}</p>
+<!--<p>구매 날짜: {{ medical_kit.purchase_date }}</p> 
 <p>유통기한: {{ medical_kit.expiration_date }}</p>
-
+-->
 
 <form method="post" action="{% url 'updatepage' %}">
     {% csrf_token %}
-    <p>구매 날짜: <input type="date" name="purchase_date" value="{{ medical_kit.purchase_date }}"></p>
-    <button type="submit">구매 날짜 등록하기</button>
+
+    <table>
+        <tr>
+            <td>용품 목록</td>
+            <td>유통기한</td>
+        </tr>
+        <tr>
+            <td><input type="text" name="name" value="감기약"></td>
+            <td><input type="date" name="expiration_date" value="{{ medical_kit.expiration_date1|date:'Y-m-d' }}"></td>
+        </tr>
+        <tr>
+            <td><input type="text" name="name" value="소화제"></td>
+            <td><input type="date" name="expiration_date" value="{{ medical_kit.expiration_date1|date:'Y-m-d' }}"></td>
+        </tr>
+        <tr>
+            <td><input type="text" name="name" value="지사제"></td>
+            <td><input type="date" name="expiration_date" value="{{ medical_kit.expiration_date1|date:'Y-m-d' }}"></td>
+        </tr>
+        <tr>
+            <td><input type="text" name="name" value="후시딘"></td>
+            <td><input type="date" name="expiration_date" value="{{ medical_kit.expiration_date1|date:'Y-m-d' }}"></td>
+        </tr>
+        <tr>
+            <td><input type="text" name="name" value="소독약"></td>
+            <td><input type="date" name="expiration_date" value="{{ medical_kit.expiration_date1|date:'Y-m-d' }}"></td>
+        </tr>
+        <tr>
+            <td><input type="text" name="name" value="파스"></td>
+            <td><input type="date" name="expiration_date" value="{{ medical_kit.expiration_date|date:'Y-m-d' }}"></td>
+        </tr>
+        <tr>
+            <td><input type="text" name="name" value="밴드"></td>
+            <td><input type="date" name="expiration_date" value="{{ medical_kit.expiration_date|date:'Y-m-d' }}"></td>
+        </tr>
+        <tr>
+            <td><input type="text" name="name" value="거즈"></td>
+            <td><input type="date" name="expiration_date" value="{{ medical_kit.expiration_date|date:'Y-m-d' }}"></td>
+        </tr>
+        <tr>
+            <td><input type="text" name="name" value="붕대"></td>
+            <td><input type="date" name="expiration_date" value="{{ medical_kit.expiration_date|date:'Y-m-d' }}"></td>
+        </tr>
+        <tr>
+            <td><input type="text" name="name" value="면봉"></td>
+            <td><input type="date" name="expiration_date" value="{{ medical_kit.expiration_date|date:'Y-m-d' }}"></td>
+        </tr>
+    </table>
+    
 </form>
 {% endblock %}
 
