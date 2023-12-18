@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Arduino Serial Data</title>
+</head>
+<body>
+    <h1>Arduino Serial Data</h1>
+    <p>Serial Data: {{ serial_data }}</p>
+    {% if saved_to_database %}
+        <p>Data saved to database!</p>
+    {% endif %}
+</body>
+</html>
+{% endblock %}

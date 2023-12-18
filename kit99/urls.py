@@ -17,17 +17,19 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from main import views
+from main.views import arduino
 #from main.views import read_serial_data
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.mainpage, name="mainpage"),
-    path('get_sensor_data/', views.get_sensor_data, name='get_sensor_data'),
+    #path('get_sensor_data/', views.get_sensor_data, name='get_sensor_data'),
     path('stock/', views.stockpage, name='stockpage'),
     path('deadline/', views.deadlinepage, name='deadlinepage'),
     path('deadline/update', views.updatepage, name='updatepage'),
     path('alarm/', views.alarmpage, name='alarmpage'),
     path('search/', views.searchpage, name='searchpage'),
- #   path('read_serial_data/', read_serial_data, name='read_serial_data'),
+    path('arduino/', arduino, name='arduino'),
+
 ]

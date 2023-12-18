@@ -27,3 +27,7 @@ class SearchResult(models.Model):
 
     def __str__(self):
         return self.title
+
+class ArduinoData(models.Model):
+    data = models.CharField(max_length=255)
+    timestamp = models.DateTimeField(auto_now_add=True)
