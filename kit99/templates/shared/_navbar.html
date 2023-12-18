@@ -1,0 +1,27 @@
+<nav class=" ">
+    <div class="container-fluid" style="background-color: #e3f2fd;">
+    <style>
+        body {
+            font-size: 16px; /* 기본 폰트 크기 */
+        }
+
+        @media (max-width: 768px) {
+            body {
+                font-size: 14px; /* 화면 폭이 768px 이하인 경우 폰트 크기를 조절 */
+            }
+        }
+    </style>
+    <!-- mainpage 링크 연결 -->
+    <a class="navbar-brand" href="{% url 'mainpage' %}">kit99</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ui class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link activate" aria-current="page" href="{% url 'stockpage' %}">재고</a>
+        </li>
+        </ul>
+    </div>
+    </div>
+  </nav>

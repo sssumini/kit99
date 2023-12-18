@@ -1,0 +1,20 @@
+{% load static %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}?after">
+
+<section id="title">
+    <div class="title_name">구급용품 유통기한 조회 </div>
+</section>
+
+<p>구급용품 목록 : {{ medical_kit.name }}</p>
+<p>구매 날짜: {{ medical_kit.purchase_date }}</p>
+<p>유통기한: {{ medical_kit.expiration_date }}</p>
+
+
+<form method="post" action="{% url 'updatepage' %}">
+    {% csrf_token %}
+    <p>구매 날짜: <input type="date" name="purchase_date" value="{{ medical_kit.purchase_date }}"></p>
+    <button type="submit">구매 날짜 등록하기</button>
+</form>
+{% endblock %}
+

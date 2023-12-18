@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}?after">
+
+<section id="title">
+    <div class="title_name">구급상자 <br /> 원격관리 사이트</div>
+    <p>99키트가 당신의 안전을 돕겠습니다</p>
+</section>
+
+
+<section id="main_btn">
+    <a href="{% url 'stockpage' %}">재고 확인</a>
+</section>
+
+<section id="temperature_humidity">
+    <h2>현재 온도 및 습도</h2>
+    <p>온도: {{ temperature }}°C</p>
+    <p>습도: {{ humidity }}%</p>
+</section>
+
+{% endblock %}

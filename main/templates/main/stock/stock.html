@@ -1,0 +1,69 @@
+{% load static %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}?after">
+
+<section id="title">
+    <div class="title_name">구급상비약 재고 확인 </div>
+</section>
+
+<form action="{%url 'stockpage'%}" method="POST">
+    {%csrf_token%}
+    <table>
+        <tr>
+            <td>용품 목록</td>
+            <td>개수</td>
+        </tr>
+        <tr>
+            <td><input type="text" name="name" value="감기약"></td>
+            <td><input type="text" name="quantity"></td>
+        </tr>
+        <tr>
+            <td><input type="text" name="name" value="타이레놀"></td>
+            <td><input type="text" name="quantity"></td>
+        </tr>
+        <tr>
+            <td><input type="text" name="name" value="소화제"></td>
+            <td><input type="text" name="quantity"></td>
+        </tr>
+        <tr>
+            <td><input type="text" name="name" value="지사제"></td>
+            <td><input type="text" name="quantity"></td>
+        </tr>
+        <tr>
+            <td><input type="text" name="name" value="후시딘"></td>
+            <td><input type="text" name="quantity"></td>
+        </tr>
+        <tr>
+            <td><input type="text" name="name" value="소독약"></td>
+            <td><input type="text" name="quantity"></td>
+        </tr>
+        <tr>
+            <td><input type="text" name="name" value="파스"></td>
+            <td><input type="text" name="quantity"></td>
+        </tr>
+        <tr>
+            <td><input type="text" name="name" value="밴드"></td>
+            <td><input type="text" name="quantity"></td>
+        </tr>
+        <tr>
+            <td><input type="text" name="name" value="거즈"></td>
+            <td><input type="text" name="quantity"></td>
+        </tr>
+        <tr>
+            <td><input type="text" name="name" value="붕대"></td>
+            <td><input type="text" name="quantity"></td>
+        </tr>
+        <tr>
+            <td><input type="text" name="name" value="면봉"></td>
+            <td><input type="text" name="quantity"></td>
+        </tr>
+    </table>
+</form>
+
+<form method="post" action="{% url 'mainpage' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">확인 완료</button>
+</form>
+
+{% endblock %}
