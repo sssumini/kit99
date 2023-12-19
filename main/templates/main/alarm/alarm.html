@@ -14,21 +14,21 @@
         <p>온도: {{ temperature }}, 습도: {{ humidity }}</p>
     {% endif %}
 
-    {% if humidity > 30.0 %}
+    {% if humidity > 27.0 %}
         <p>습도가 너무 높습니다! 구급상자를 서늘한 곳으로 옮겨주세요!</p>
         <p>온도: {{ temperature }}, 습도: {{ humidity }}</p>
     {% endif %}
 
-    {% if not temperature > 40.0 and not humidity > 30.0 %}
+    {% if not temperature > 40.0 and not humidity > 27.0 %}
         <h1>알림이 없습니다.</h1>
     {% endif %}
 
-    {% if temperature > 40.0 and humidity > 30.0 %}
+    {% if temperature > 40.0 and humidity > 27.0 %}
         <p>온습도가 너무 높습니다! 구급상자를 온도가 낮고 서늘한 곳으로 옮겨주세요!</p>
         <p>온도: {{ temperature }}, 습도: {{ humidity }}</p>
     {% endif %}
     
-    {% if not temperature > 40.0 and not humidity > 30.0 %}
+    {% if not temperature > 40.0 and not humidity > 27.0 %}
         <h1>알림이 없습니다.</h1>
     {% endif %}
     
