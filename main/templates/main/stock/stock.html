@@ -3,6 +3,7 @@
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/project.css' %}?after">
 
+
 <section id="title">
     <div class="title_name">구급상비약 재고 확인 </div>
 </section>
@@ -17,52 +18,47 @@
         </tr>
         <tr>
             <td><input type="text" name="name" value="감기약"></td>
-            <td><input type="text" name="quantity" value="{{ medical_item.quantity }}"></td>
+            <td><input type="text" name="quantity" value="{{ medical_item1.quantity }}"></td>
         </tr>
         <tr>
             <td><input type="text" name="name" value="소화제" ></td>
-            <td><input type="text" name="quantity" value="{{ medical_item.quantity }}" ></td>
+            <td><input type="text" name="quantity" value="{{ medical_item2.quantity }}" ></td>
         </tr>
         <tr>
             <td><input type="text" name="name" value="지사제"></td>
-            <td><input type="text" name="quantity" value="{{ medical_item.quantity }}" ></td>
+            <td><input type="text" name="quantity" value="{{ medical_item3.quantity }}" ></td>
         </tr>
         <tr>
             <td><input type="text" name="name" value="후시딘"></td>
-            <td><input type="text" name="quantity" value="{{ medical_item.quantity }}" ></td>
+            <td><input type="text" name="quantity" value="0" ></td>
         </tr>
         <tr>
             <td><input type="text" name="name" value="소독약" ></td>
-            <td><input type="text" name="quantity" value="{{ medical_item.quantity }}"></td>
+            <td><input type="text" name="quantity" value="0"></td>
         </tr>
         <tr>
             <td><input type="text" name="name" value="파스" ></td>
-            <td><input type="text" name="quantity" value="{{ medical_item.quantity }}"></td>
+            <td><input type="text" name="quantity" value="0"></td>
         </tr>
         <tr>
             <td><input type="text" name="name" value="밴드" ></td>
-            <td><input type="text" name="quantity" value="{{ medical_item.quantity }}"></td>
+            <td><input type="text" name="quantity" value="0"></td>
         </tr>
         <tr>
             <td><input type="text" name="name" value="거즈" ></td>
-            <td><input type="text" name="quantity" value="{{ medical_item.quantity }}"></td>
+            <td><input type="text" name="quantity" value="0"></td>
         </tr>
         <tr>
             <td><input type="text" name="name" value="붕대" ></td>
-            <td><input type="text" name="quantity" value="{{ medical_item.quantity }}"></td>
+            <td><input type="text" name="quantity" value="0"></td>
         </tr>
         <tr>
             <td><input type="text" name="name" value="면봉"></td>
-            <td><input type="text" name="quantity" value="{{ medical_item.quantity }}"></td>
+            <td><input type="text" name="quantity" value="0"></td>
         </tr>
     </table>
     <button type="submit">재고저장</button>
 </form>
 
-<form method="post" action="{% url 'mainpage' %}">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">확인 완료</button>
-</form>
 
 {% endblock %}

@@ -16,13 +16,33 @@ from django.shortcuts import get_object_or_404
 
 def arduino(request):
     # 시리얼 포트 열기
-    ser = serial.Serial('COM3', 9600)  # 포트와 보레이트를 실제 아두이노와 맞게 설정
+    ser = serial.Serial('COM4', 9600)  # 포트와 보레이트를 실제 아두이노와 맞게 설정
     # 시리얼 데이터 읽기
     line = ser.readline().decode('utf-8').rstrip()
     # 데이터베이스에 저장
-    ArduinoData.objects.create(data=line)
+    data_values = line.split(',')
+    try:
+        temperature = float(data_values[3])
+        humidity = float(data_values[4])
+    except (ValueError, IndexError):
+        temperature = None
+        humidity = None
+
+    stock_items = data_values[:3]
+    stock_item_names = ["감기약", "면봉", "소화제"]
+    for name, quantity_str in zip(stock_item_names, stock_items):
+        try:
+            quantity = int(quantity_str)
+        except ValueError:
+            # 정수로 변환할 수 없는 값이면 기본값 0으로 설정하거나 다른 처리 수행
+            quantity = 0
+        stock_item, created = Stock.objects.get_or_create(name=name)
+        stock_item.quantity = quantity
+        stock_item.save()
+    ArduinoData.objects.create(data=line, temperature=temperature, humidity=humidity)
     # 시리얼 데이터 및 저장 여부를 템플릿으로 전달
-    return render(request, 'main/arduino/arduino.html', {'serial_data': line, 'saved_to_database': True})
+    #temperature, humidity = float(data_values[3]), float(data_values[4])
+    return render(request, 'main/arduino/arduino.html', {'serial_data': line, 'temperature': temperature, 'humidity': humidity, 'saved_to_database': True})
 
 
 
@@ -51,18 +71,33 @@ def searchpage(request):
 def stockpage(request):
     # Arduino 데이터 확인
     latest_arduino_data = ArduinoData.objects.last()
-    if latest_arduino_data and int(latest_arduino_data.data) >= 100:
-        quantity_value = 1
-    else:
-        quantity_value = 0
+    quantity_value1, quantity_value2, quantity_value3 = 0, 0, 0
 
-    # "감기약"에 대한 Stock 객체 가져오거나 생성
-    medical_item, created = Stock.objects.get_or_create(name="감기약")
+    if latest_arduino_data and ',' in latest_arduino_data.data:
+        data_values = latest_arduino_data.data.split(',')
+        try:
+            # 시리얼 데이터에서 각 약품의 개수 추출
+            quantity_value1 = int(data_values[0])
+            quantity_value2 = int(data_values[1])
+            quantity_value3 = int(data_values[2])
+        except ValueError:
+            pass
+
+    # "감기약", "소화제"에 대한 Stock 객체 가져오거나 생성
+    medical_item1, created1 = Stock.objects.get_or_create(name="감기약")
+    medical_item2, created2 = Stock.objects.get_or_create(name="소화제")
+    medical_item3, created3 = Stock.objects.get_or_create(name="지사제")
 
     # 기존에 존재하는 경우 quantity 업데이트
-    if not created:
-        medical_item.quantity = quantity_value
-        medical_item.save()
+    if not created1:
+        medical_item1.quantity = quantity_value1
+        medical_item1.save()
+    if not created2:
+        medical_item2.quantity = quantity_value2
+        medical_item2.save()
+    if not created3:
+        medical_item3.quantity = quantity_value3
+        medical_item3.save()
 
     if request.method == 'POST':
         try:
@@ -95,13 +130,26 @@ def stockpage(request):
             error_message = f"ObjectDoesNotExist: {e}"
             return render(request, 'main/main.html', {'error_message': error_message})
 
-    return render(request, 'main/stock/stock.html', {'medical_item': medical_item})
+    return render(request, 'main/stock/stock.html', {'medical_item1': medical_item1, 'medical_item2': medical_item2, 'medical_item3': medical_item3})
 
 
 def mainpage(request):
-    temperature = 25.5
-    humidity = 60.0
-    
+    latest_arduino_data = ArduinoData.objects.last()
+
+    temperature = "값 없음"
+    humidity = "값 없음"
+
+    # 최근 데이터가 있다면 온도와 습도 추출
+    if latest_arduino_data:
+        data_values = latest_arduino_data.data.split(',')
+        try:
+            temperature = float(data_values[3])
+            humidity = float(data_values[4])
+        except (IndexError, ValueError):
+            # 온도와 습도 값이 없는 경우
+            temperature = "값 없음"
+            humidity = "값 없음"
+
     context = {
         'temperature': temperature,
         'humidity': humidity,
@@ -110,11 +158,28 @@ def mainpage(request):
     return render(request, 'main/main.html', context)
 
 def alarmpage(request):
-    temperature = float(request.GET.get('temperature', 90))
-    humidity = float(request.GET.get('humidity', 0))
+    latest_arduino_data = ArduinoData.objects.last()
 
-    return render(request, 'main/alarm/alarm.html', {'temperature': temperature, 'humidity': humidity})
+    temperature = "값 없음"
+    humidity = "값 없음"
 
+    # 최근 데이터가 있다면 온도와 습도 추출
+    if latest_arduino_data:
+        data_values = latest_arduino_data.data.split(',')
+        try:
+            temperature = float(data_values[3])
+            humidity = float(data_values[4])
+        except (IndexError, ValueError):
+            # 온도와 습도 값이 없는 경우
+            temperature = "값 없음"
+            humidity = "값 없음"
+
+    context = {
+        'temperature': temperature,
+        'humidity': humidity,
+    }
+
+    return render(request, 'main/alarm/alarm.html', context)
 
 
 class MedicalKitForm(forms.ModelForm):
@@ -143,16 +208,24 @@ def deadlinepage(request):
 
     return render(request, 'main/deadline/deadline.html')
 
+from django.utils.dateparse import parse_date
+from dateutil.relativedelta import relativedelta
+
 def updatepage(request):
+    medical_kit = MedicalKit.objects.first()
+
     if request.method == 'POST':
         purchase_date_str = request.POST.get('purchase_date')
         expiration_date_str = request.POST.get('expiration_date')
-        expiration_date_str1 = request.POST.get('expiration_date')
+        expiration_date_str1 = request.POST.get('expiration_date1')
+
+        if not medical_kit:
+            # medical_kit이 None이면 새로 생성
+            medical_kit = MedicalKit.objects.create()
 
         if purchase_date_str:
             purchase_date = parse_date(purchase_date_str)
             if purchase_date:
-                medical_kit = MedicalKit.objects.first()
                 medical_kit.purchase_date = purchase_date
                 medical_kit.expiration_date = purchase_date + relativedelta(days=1095)
                 medical_kit.expiration_date1 = purchase_date + relativedelta(days=365)
@@ -161,7 +234,7 @@ def updatepage(request):
             expiration_date = parse_date(expiration_date_str)
             if expiration_date:
                 medical_kit.expiration_date = expiration_date
-        
+
         if expiration_date_str1:
             expiration_date1 = parse_date(expiration_date_str1)
             if expiration_date1:
@@ -169,8 +242,6 @@ def updatepage(request):
 
         medical_kit.save()
 
-    medical_kit = MedicalKit.objects.first()
-    medical_kit.refresh_from_db()  
     return render(request, 'main/deadline/update.html', {'medical_kit': medical_kit})
 
 

@@ -5,17 +5,33 @@
 <link rel="stylesheet" type="text/css" href="{% static 'css/project.css' %}?after">
 
 <section id="title">
-    <div class="title_name">알람 페이지 </div>
+    <div class="title_name">알림</div>
 </section>
 
 <body>
-    <h2>알람 페이지</h2>
-    {% if temperature > 30.0 or humidity > 80.0 %}
-        <p>온습도가 일정 값 이상입니다. 주의하세요!</p>
-        <p>Temperature: {{ temperature }}, Humidity: {{ humidity }}</p>
-        <!-- 여기에 추가적인 알림 내용을 작성할 수 있습니다. -->
-    {% else %}
-        <h1>No alarm at the moment</h1>
+    {% if temperature > 40.0 %}
+        <p>온도가 너무 높습니다! 구급상자를 온도가 낮은 곳으로 옮겨주세요!</p>
+        <p>온도: {{ temperature }}, 습도: {{ humidity }}</p>
     {% endif %}
+
+    {% if humidity > 30.0 %}
+        <p>습도가 너무 높습니다! 구급상자를 서늘한 곳으로 옮겨주세요!</p>
+        <p>온도: {{ temperature }}, 습도: {{ humidity }}</p>
+    {% endif %}
+
+    {% if not temperature > 40.0 and not humidity > 30.0 %}
+        <h1>알림이 없습니다.</h1>
+    {% endif %}
+
+    {% if temperature > 40.0 and humidity > 30.0 %}
+        <p>온습도가 너무 높습니다! 구급상자를 온도가 낮고 서늘한 곳으로 옮겨주세요!</p>
+        <p>온도: {{ temperature }}, 습도: {{ humidity }}</p>
+    {% endif %}
+    
+    {% if not temperature > 40.0 and not humidity > 30.0 %}
+        <h1>알림이 없습니다.</h1>
+    {% endif %}
+    
+
 </body>
 {% endblock %}

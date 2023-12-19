@@ -1,13 +1,15 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/project.css' %}?after">
+
 <link href="main.css" type="text/css" rel="stylesheet">
 <section id="title">
     <div class="title_name">구급용품 유통기한 조회 </div>
 </section>
 
-<p>구급용품 목록 : {{ medical_kit.name }}</p>
-<!--<p>구매 날짜: {{ medical_kit.purchase_date }}</p> 
+<!--<p>구급용품 목록 : {{ medical_kit.name }}</p>
+<p>구매 날짜: {{ medical_kit.purchase_date }}</p> 
 <p>유통기한: {{ medical_kit.expiration_date }}</p>
 -->
 
@@ -59,8 +61,13 @@
             <td><input type="text" name="name" value="면봉"></td>
             <td><input type="date" name="expiration_date" value="{{ medical_kit.expiration_date|date:'Y-m-d' }}"></td>
         </tr>
+        <tr>
+            <td colspan="2">
+                <a href="{% url 'mainpage' %}">돌아가기</a>
+            </td>
+        </tr>
     </table>
-    
+
 </form>
 {% endblock %}
 

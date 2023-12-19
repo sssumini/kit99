@@ -5,8 +5,11 @@ from django.utils import timezone
 
 # Create your models here.
 class Stock(models.Model):
-    name = models.CharField(max_length=255)
-    quantity = models.IntegerField(default=0)
+    name = models.CharField(max_length=255, unique=True)
+    quantity1 = models.IntegerField(default=0)
+    quantity2 = models.IntegerField(default=0)
+    quantity3 = models.IntegerField(default=0)
+    
 
 
 class MedicalKit(models.Model):
@@ -30,4 +33,7 @@ class SearchResult(models.Model):
 
 class ArduinoData(models.Model):
     data = models.CharField(max_length=255)
+    temperature = models.FloatField(null=True, blank=True)
+    humidity = models.FloatField(null=True, blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
+    

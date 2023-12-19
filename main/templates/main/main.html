@@ -4,19 +4,18 @@
 <link rel="stylesheet" type="text/css" href="{% static 'css/project.css' %}?after">
 
 <section id="title">
-    <div class="title_name">구급상자 <br /> 원격관리 사이트</div>
-    <p>99키트가 당신의 안전을 돕겠습니다</p>
+    <div class="title_name">
+        구급상자 <br /> 원격관리 사이트
+        <p>99키트가 당신의 안전을 돕겠습니다</p>
+    </div>
+    <img src="{% static 'images/first-aid-kit.png' %}" alt="First Aid Kit" style="width: 100px; height: auto;">
 </section>
-
 
 <section id="main_btn">
     <a href="{% url 'stockpage' %}">재고 확인</a>
 </section>
 
-<section id="temperature_humidity">
-    <h2>현재 온도 및 습도</h2>
-    <p>온도: {{ temperature }}°C</p>
-    <p>습도: {{ humidity }}%</p>
-</section>
+<p>온도: {{ temperature }}</p>
+<p>습도: {{ humidity }}</p>
 
 {% endblock %}
